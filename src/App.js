@@ -25,19 +25,30 @@ function Fish(props) {
     var imageWidth = 0;
     var imageHeight = 0;
     
+  function rotate() {
+    if(vectors.current[0] === 1) {
+        setStyle((style) => { return {...style, transform: vectors.current[1] === 1 ? "rotate(20deg) scaleX(1)" : "rotate(-20deg) scaleX(-1)" } });
+    }
+    else if(vectors.current[0] === -1) {
+        setStyle((style) => { return {...style, transform: vectors.current[1] === 1 ? "rotate(-20deg) scaleX(1)" : "rotate(20deg) scaleX(-1)" } });
+    }
+  }
+    
   async function upStep() {
        top.current -= step;
-       setStyle((style) => { return {...style, top: `${ top.current }px`, transform: "rotate(20deg)"} });
+       setStyle((style) => { return {...style, top: `${ top.current }px` } });
+       rotate();
   }
   
   async function downStep() {
        top.current += step;
-       setStyle((style) => { return {...style, top: `${ top.current }px`, transform: "rotate(-20deg)"} });
+       setStyle((style) => { return {...style, top: `${ top.current }px` } });
+       rotate();
   }
   
   async function leftStep() {
        left.current -= step;
-       setStyle((style) => { return {...style, left: `${ left.current }px`, transform: "scaleX(1)"} });
+       setStyle((style) => { return {...style, left: `${ left.current }px`, transform: "scaleX(1)" } });
   }
   
   async function rightStep() {
@@ -78,8 +89,8 @@ function Fish(props) {
   
   async function randomStart() {
     if(!initialized.current) {
-    top.current = Math.floor(Math.random() * windowHeight);
-    left.current = Math.floor(Math.random() * windowWidth);
+    top.current = Math.floor(Math.random() * (windowHeight - imageHeight));
+    left.current = Math.floor(Math.random() * (windowWidth - imageWidth));
     setStyle((style) => { return {...style, top: `${ top.current }px`, left: `${ left.current }px`} });
     }
   }
